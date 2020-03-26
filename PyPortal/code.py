@@ -4,7 +4,7 @@ import board
 from adafruit_pyportal import PyPortal
 cwd = ("/"+__file__).rsplit('/', 1)[0] # the current working directory (where this file is)
 sys.path.append(cwd)
-import openweather_graphics  # pylint: disable=wrong-import-position
+import covid_graphics  # pylint: disable=wrong-import-position
 
 # Get wifi details and more from a secrets.py file
 try:
@@ -31,7 +31,7 @@ pyportal = PyPortal(url=DATA_SOURCE,
                     status_neopixel=board.NEOPIXEL,
                     default_bg=0x000000)
 
-gfx = openweather_graphics.OpenWeather_Graphics(pyportal.splash, am_pm=True)
+gfx = covid_graphics.Covid_Graphics(pyportal.splash, am_pm=True)
 
 localtile_refresh = None
 weather_refresh = None
@@ -47,11 +47,11 @@ while True:
             continue
 
     # only query the weather every 10 minutes (and on first run)
-    if (not weather_refresh) or (time.monotonic() - weather_refresh) > 600:
+    if (not weather_refresh) or (time.monotonic() - weather_refresh) > 3600:
         try:
             value = pyportal.fetch()
             print("Response is", value)
-            gfx.display_weather(value)
+            gfx.display_cases(value)
             weather_refresh = time.monotonic()
         except RuntimeError as e:
             print("Some error occured, retrying! -", e)

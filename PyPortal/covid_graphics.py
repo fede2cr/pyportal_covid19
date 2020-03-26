@@ -10,21 +10,19 @@ small_font = cwd+"/fonts/Arial-12.bdf"
 medium_font = cwd+"/fonts/Arial-16.bdf"
 large_font = cwd+"/fonts/Arial-Bold-24.bdf"
 
-class OpenWeather_Graphics(displayio.Group):
-    def __init__(self, root_group, *, am_pm=True, celsius=True):
+class Covid_Graphics(displayio.Group):
+    def __init__(self, root_group, *, am_pm=True):
         super().__init__(max_size=2)
         self.am_pm = am_pm
-        self.celsius = celsius
-
         root_group.append(self)
         self._icon_group = displayio.Group(max_size=1)
         self.append(self._icon_group)
-        self._text_group = displayio.Group(max_size=5)
+        self._text_group = displayio.Group(max_size=7)
         self.append(self._text_group)
 
         self._icon_sprite = None
         self._icon_file = None
-        #self.set_icon(cwd+"/weather_background.bmp")
+        self.set_icon(cwd+"/icons/sarscov2.bmp")
 
         self.small_font = bitmap_font.load_font(small_font)
         self.medium_font = bitmap_font.load_font(medium_font)
@@ -42,59 +40,60 @@ class OpenWeather_Graphics(displayio.Group):
         self.time_text.color = 0xFFFFFF
         self._text_group.append(self.time_text)
 
-        self.temp_text = Label(self.large_font, max_glyphs=6)
-        self.temp_text.x = 200
-        self.temp_text.y = 195
-        self.temp_text.color = 0xFFFFFF
-        self._text_group.append(self.temp_text)
+        self.deaths_text = Label(self.medium_font, max_glyphs=12)
+        self.deaths_text.x = 10
+        self.deaths_text.y = 75
+        self.deaths_text.color = 0xFFFFFF
+        self._text_group.append(self.deaths_text)
 
-        self.main_text = Label(self.large_font, max_glyphs=20)
-        self.main_text.x = 10
-        self.main_text.y = 195
-        self.main_text.color = 0xFFFFFF
-        self._text_group.append(self.main_text)
+        self.critical_text = Label(self.medium_font, max_glyphs=12)
+        self.critical_text.x = 10
+        self.critical_text.y = 105
+        self.critical_text.color = 0xFFFFFF
+        self._text_group.append(self.critical_text)
 
-        self.description_text = Label(self.small_font, max_glyphs=60)
-        self.description_text.x = 10
-        self.description_text.y = 225
-        self.description_text.color = 0xFFFFFF
-        self._text_group.append(self.description_text)
+        self.recovered_text = Label(self.medium_font, max_glyphs=12)
+        self.recovered_text.x = 10
+        self.recovered_text.y = 135
+        self.recovered_text.color = 0xFFFFFF
+        self._text_group.append(self.recovered_text)
 
-    def display_weather(self, weather):
-        covid = json.loads(weather)
-        # set the icon/background
-#        weather_icon = weather['costa rica'][0]
-        #self.set_icon(cwd+"/icons/01d.bmp")
+        self.today_cases_text = Label(self.medium_font, max_glyphs=14)
+        self.today_cases_text.x = 10
+        self.today_cases_text.y = 165
+        self.today_cases_text.color = 0xFFFFFF
+        self._text_group.append(self.today_cases_text)
 
-#        country_name =  weather['name'] + ", " + weather['sys']['country']
-        country_name =  covid["country"]
-        print(country_name)
+        self.cases_text = Label(self.large_font, max_glyphs=20)
+        self.cases_text.x = 10
+        self.cases_text.y = 195
+        self.cases_text.color = 0xFFFFFF
+        self._text_group.append(self.cases_text)
+
+        self.cases_million_text = Label(self.small_font, max_glyphs=60)
+        self.cases_million_text.x = 10
+        self.cases_million_text.y = 225
+        self.cases_million_text.color = 0xFFFFFF
+        self._text_group.append(self.cases_million_text)
+
+    def display_cases(self, covid_data):
+        covid = json.loads(covid_data)
+        self.country_text =  covid["country"]
         if not self.country_text:
-            self.country_text = Label(self.medium_font, text=country_name)
+            self.country_text = Label(self.medium_font, text=country_text)
             self.country_text.x = 10
             self.country_text.y = 12
             self.country_text.color = 0xFFFFFF
             self._text_group.append(self.country_text)
 
-
         self.update_time()
 
-        cases="Cases: " + str(covid["timeline"]["cases"]["3/25/20"])
-
-        self.main_text.text = cases
-
-#        temperature = weather['main']['temp'] - 273.15 # its...in kelvin
-#        print(temperature)
-#        if self.celsius:
-#            self.temp_text.text = "%d °C" % temperature
-#        else:
-#            self.temp_text.text = "%d °F" % ((temperature * 9 / 5) + 32)
-
-#        description = weather['weather'][0]['description']
-#        description = description[0].upper() + description[1:]
-#        print(description)
-#        self.description_text.text = description
-        # "thunderstorm with heavy drizzle"
+        self.deaths_text.text = "Deaths: " + str(covid["deaths"])
+        self.critical_text.text = "Recovered: " + str(covid["critical"])
+        self.recovered_text.text = "Recovered: " + str(covid["recovered"])
+        self.today_cases_text.text = "Today Cases: " + str(covid["todayCases"])
+        self.cases_text.text = "Cases: " + str(covid["cases"])
+        self.cases_million_text.text = "Cases per 1 million: " + str(covid["casesPerOneMillion"])
 
     def update_time(self):
         """Fetch the time.localtime(), parse it out and update the display text"""
