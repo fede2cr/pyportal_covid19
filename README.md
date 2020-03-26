@@ -1,9 +1,7 @@
 # pyportal_covid19
 Using and Adafruit PyPortal to receive daily stats about the progress of Covid19 infections in your country
 
-## Status
-
-Work in progress. So for it uses a locally downloaded file to print the Cases counter, the Country, and the local date.
+![PyPortal](imgs/PyPortal.JPG)
 
 ## How to install
 
