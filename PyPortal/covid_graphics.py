@@ -17,7 +17,7 @@ class Covid_Graphics(displayio.Group):
         root_group.append(self)
         self._icon_group = displayio.Group(max_size=1)
         self.append(self._icon_group)
-        self._text_group = displayio.Group(max_size=7)
+        self._text_group = displayio.Group(max_size=8)
         self.append(self._text_group)
 
         self._icon_sprite = None
@@ -39,6 +39,12 @@ class Covid_Graphics(displayio.Group):
         self.time_text.y = 12
         self.time_text.color = 0xFFFFFF
         self._text_group.append(self.time_text)
+
+        self.country_text = Label(self.medium_font, max_glyphs=60)
+        self.country_text.x = 10
+        self.country_text.y = 12
+        self.country_text.color = 0xFFFFFF
+        self._text_group.append(self.country_text)
 
         self.deaths_text = Label(self.medium_font, max_glyphs=12)
         self.deaths_text.x = 10
@@ -78,18 +84,11 @@ class Covid_Graphics(displayio.Group):
 
     def display_cases(self, covid_data):
         covid = json.loads(covid_data)
-        self.country_text =  covid["country"]
-        if not self.country_text:
-            self.country_text = Label(self.medium_font, text=country_text)
-            self.country_text.x = 10
-            self.country_text.y = 12
-            self.country_text.color = 0xFFFFFF
-            self._text_group.append(self.country_text)
 
         self.update_time()
-
+        self.country_text.text =  str(covid["country"])
         self.deaths_text.text = "Deaths: " + str(covid["deaths"])
-        self.critical_text.text = "Recovered: " + str(covid["critical"])
+        self.critical_text.text = "Critical: " + str(covid["critical"])
         self.recovered_text.text = "Recovered: " + str(covid["recovered"])
         self.today_cases_text.text = "Today Cases: " + str(covid["todayCases"])
         self.cases_text.text = "Cases: " + str(covid["cases"])
