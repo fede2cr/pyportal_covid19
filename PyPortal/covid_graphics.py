@@ -17,7 +17,7 @@ class Covid_Graphics(displayio.Group):
         root_group.append(self)
         self._icon_group = displayio.Group(max_size=1)
         self.append(self._icon_group)
-        self._text_group = displayio.Group(max_size=8)
+        self._text_group = displayio.Group(max_size=9)
         self.append(self._text_group)
 
         self._icon_sprite = None
@@ -35,10 +35,16 @@ class Covid_Graphics(displayio.Group):
         self.country_text = None
 
         self.time_text = Label(self.medium_font, max_glyphs=8)
-        self.time_text.x = 200
+        self.time_text.x = 220
         self.time_text.y = 12
         self.time_text.color = 0xFFFFFF
         self._text_group.append(self.time_text)
+
+        self.date_text = Label(self.medium_font, max_glyphs=10)
+        self.date_text.x = 200
+        self.date_text.y = 220
+        self.date_text.color = 0xFFFFFF
+        self._text_group.append(self.date_text)
 
         self.country_text = Label(self.medium_font, max_glyphs=60)
         self.country_text.x = 10
@@ -64,7 +70,7 @@ class Covid_Graphics(displayio.Group):
         self.recovered_text.color = 0xFFFFFF
         self._text_group.append(self.recovered_text)
 
-        self.today_cases_text = Label(self.medium_font, max_glyphs=14)
+        self.today_cases_text = Label(self.medium_font, max_glyphs=16)
         self.today_cases_text.x = 10
         self.today_cases_text.y = 165
         self.today_cases_text.color = 0xFFFFFF
@@ -99,17 +105,23 @@ class Covid_Graphics(displayio.Group):
         now = time.localtime()
         hour = now[3]
         minute = now[4]
-        format_str = "%d:%02d"
+        year = now[0]
+        month = now[1]
+        day = now[2]
+        time_format_str = "%d:%02d"
+        date_format_str = "%d-%02d-%02d"
         if self.am_pm:
             if hour >= 12:
                 hour -= 12
-                format_str = format_str+" PM"
+                time_format_str = time_format_str+" PM"
             else:
-                format_str = format_str+" AM"
+                time_format_str = time_format_str+" AM"
             if hour == 0:
                 hour = 12
-        time_str = format_str % (hour, minute)
+        time_str = time_format_str % (hour, minute)
         print(time_str)
+        date_str = date_format_str % (year, month, day)
+        self.date_text.text = date_str
         self.time_text.text = time_str
 
     def set_icon(self, filename):
