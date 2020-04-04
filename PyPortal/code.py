@@ -19,8 +19,7 @@ LOCATION = "CRI"
 
 # Set up where we'll be fetching data from
 
-DATE="2020-04-03"  # TODO: Si data está vació, pedir el día anterior
-DATA_SOURCE = "https://covid-api.com/api/reports?date="+DATE+"&iso="+LOCATION
+DATA_SOURCE = "https://covid-api.com/api/reports?iso="+LOCATION
 
 DATA_LOCATION = []
 
@@ -32,16 +31,6 @@ pyportal = PyPortal(url=DATA_SOURCE,
                     default_bg=0x000000)
 
 gfx = covid_graphics.Covid_Graphics(pyportal.splash, am_pm=True)
-
-pyportal.get_local_time()
-now = time.localtime()
-
-year = now[0]
-month = now[1]
-day = now[2] -1
-date_format_str = "%d-%02d-%02d"
-DATE = date_format_str % (year, month, day)
-print(dir(pyportal))
 
 localtile_refresh = None
 weather_refresh = None
