@@ -52,25 +52,19 @@ class Covid_Graphics(displayio.Group):
         self.country_text.color = 0xFFFFFF
         self._text_group.append(self.country_text)
 
-        self.deaths_text = Label(self.medium_font, max_glyphs=12)
+        self.deaths_text = Label(self.medium_font, max_glyphs=18)
         self.deaths_text.x = 10
-        self.deaths_text.y = 75
+        self.deaths_text.y = 105
         self.deaths_text.color = 0xFFFFFF
         self._text_group.append(self.deaths_text)
 
-        self.critical_text = Label(self.medium_font, max_glyphs=12)
-        self.critical_text.x = 10
-        self.critical_text.y = 105
-        self.critical_text.color = 0xFFFFFF
-        self._text_group.append(self.critical_text)
-
-        self.recovered_text = Label(self.medium_font, max_glyphs=12)
+        self.recovered_text = Label(self.medium_font, max_glyphs=18)
         self.recovered_text.x = 10
         self.recovered_text.y = 135
         self.recovered_text.color = 0xFFFFFF
         self._text_group.append(self.recovered_text)
 
-        self.today_cases_text = Label(self.medium_font, max_glyphs=16)
+        self.today_cases_text = Label(self.medium_font, max_glyphs=18)
         self.today_cases_text.x = 10
         self.today_cases_text.y = 165
         self.today_cases_text.color = 0xFFFFFF
@@ -82,23 +76,23 @@ class Covid_Graphics(displayio.Group):
         self.cases_text.color = 0xFFFFFF
         self._text_group.append(self.cases_text)
 
-        self.cases_million_text = Label(self.small_font, max_glyphs=60)
-        self.cases_million_text.x = 10
-        self.cases_million_text.y = 225
-        self.cases_million_text.color = 0xFFFFFF
-        self._text_group.append(self.cases_million_text)
+        self.fatality_text = Label(self.small_font, max_glyphs=60)
+        self.fatality_text.x = 10
+        self.fatality_text.y = 225
+        self.fatality_text.color = 0xFFFFFF
+        self._text_group.append(self.fatality_text)
 
     def display_cases(self, covid_data):
         covid = json.loads(covid_data)
 
         self.update_time()
-        self.country_text.text =  str(covid["country"])
-        self.deaths_text.text = "Deaths: " + str(covid["deaths"])
-        self.critical_text.text = "Critical: " + str(covid["critical"])
-        self.recovered_text.text = "Recovered: " + str(covid["recovered"])
-        self.today_cases_text.text = "Today Cases: " + str(covid["todayCases"])
-        self.cases_text.text = "Cases: " + str(covid["cases"])
-        self.cases_million_text.text = "Cases per 1 million: " + str(covid["casesPerOneMillion"])
+        print(covid["data"][0])
+        self.country_text.text =  str(covid["data"][0]["region"]["name"])
+        self.deaths_text.text = "Deaths: " + str(covid["data"][0]["deaths"])
+        self.recovered_text.text = "Recovered: " + str(covid["data"][0]["recovered"])
+        self.today_cases_text.text = "Today Cases: " + str(covid["data"][0]["confirmed_diff"])
+        self.cases_text.text = "Cases: " + str(covid["data"][0]["confirmed"])
+        self.fatality_text.text = "Fatality rate: " + str(covid["data"][0]["fatality_rate"])
 
     def update_time(self):
         """Fetch the time.localtime(), parse it out and update the display text"""

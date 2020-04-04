@@ -15,14 +15,14 @@ except ImportError:
 
 # Use cityname, country code where countrycode is ISO3166 format.
 # E.g. "New York, US" or "London, GB"
-LOCATION = "costa rica"
+LOCATION = "CRI"
 
 # Set up where we'll be fetching data from
-DATA_SOURCE = "https://corona.lmao.ninja/v2/historical/"+LOCATION
-#DATA_SOURCE = "http://api.openweathermap.org/data/2.5/weather?q="+LOCATION
-# You'll need to get a token from openweather.org, looks like 'b6907d289e10d714a6e88b30761fae22'
-DATA_LOCATION = []
 
+DATE="2020-04-03"  # TODO: Si data está vació, pedir el día anterior
+DATA_SOURCE = "https://covid-api.com/api/reports?date="+DATE+"&iso="+LOCATION
+
+DATA_LOCATION = []
 
 # Initialize the pyportal object and let us know what data to fetch and where
 # to display it
@@ -32,6 +32,16 @@ pyportal = PyPortal(url=DATA_SOURCE,
                     default_bg=0x000000)
 
 gfx = covid_graphics.Covid_Graphics(pyportal.splash, am_pm=True)
+
+pyportal.get_local_time()
+now = time.localtime()
+
+year = now[0]
+month = now[1]
+day = now[2] -1
+date_format_str = "%d-%02d-%02d"
+DATE = date_format_str % (year, month, day)
+print(dir(pyportal))
 
 localtile_refresh = None
 weather_refresh = None
