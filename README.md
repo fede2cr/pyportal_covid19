@@ -11,6 +11,12 @@ This will hopefully land on a Learn guide, so it will have detailed installation
 2. Now, overwrite the files in the PyPortal/ folder, to the CIRCUITPY drive
 
 
+## API
+
+https://covid-19-apis.postman.com/
+https://covid-api.com/api/reports?iso=CRI
+
+
 ## Bugs
 
 [ ] I doesn't seem to download the JSON file from the API site from the PyPortal. I had to open the link with Firefox, and save it as ```local.txt```. The user agent for ``wget`` might be blocked, so the same could be happening with Python
