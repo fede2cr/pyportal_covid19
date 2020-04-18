@@ -13,13 +13,9 @@ This will hopefully land on a Learn guide, so it will have detailed installation
 
 ## API
 
-https://covid-19-apis.postman.com/
+This is the URL for the API, where you would need to change the location at the end.
 https://covid-api.com/api/reports?iso=CRI
 
-
-## Bugs
-
-[ ] I doesn't seem to download the JSON file from the API site from the PyPortal. I had to open the link with Firefox, and save it as ```local.txt```. The user agent for ``wget`` might be blocked, so the same could be happening with Python
 
 ## Attribution
 
